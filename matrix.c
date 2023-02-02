@@ -45,7 +45,37 @@ void matrixDispose(struct Matrix *matrix)
     free(matrix);
 }
 
-struct Matrix *matrixMultiply(struct Matrix *matrix_a, struct Matrix *matrix_b)
+struct Matrix * matrixCopy(struct Matrix * matrix) {
+    struct Matrix * new_matrix = matrixNew(matrix->rows, matrix->cols);
+    int x,y;
+
+    for (x = 0; x < matrix->cols; x++) {
+        for (y = 0; y < matrix->rows; y++) {
+            matrixSetValue(new_matrix, x,y, matrixGetValue(matrix,x,y));
+        }
+    }
+}
+
+void matrixAddMatrix(struct Matrix * matrix, struct Matrix * other) {
+    assert(matrix->cols == other-> cols && matrix->rows == other->cols, "Matrices must be the the same size to add (matrixAddMatrix)");
+    int x,y;
+    for (x = 0; x < matrix->cols; x++) {
+        for (y = 0; y < matrix->rows;y++) {
+            matrixSetValue(matrix,x,y,matrixGetValue(matrix,x,y)+matrixGetValue(other,x,y));
+        }
+    }
+}
+
+void matrixAddFloat(struct Matrix * matrix, float value) {
+    int x,y;
+    for (x = 0; x < matrix->cols; x++) {
+        for (y = 0; y < matrix->rows;y++) {
+            matrixSetValue(matrix,x,y,matrixGetValue(matrix,x,y)+value);
+        }
+    }
+}
+
+struct Matrix *matrixFromMultiply(struct Matrix *matrix_a, struct Matrix *matrix_b)
 {
     assert(matrix_a->cols == matrix_b->rows, "Matrix a cols must equal matrix b rows (matrixMultiply)\n");
 
@@ -70,19 +100,13 @@ struct Matrix *matrixMultiply(struct Matrix *matrix_a, struct Matrix *matrix_b)
     return new_matrix;
 }
 
-struct Matrix *matrixAddition(struct Matrix *matrix_a, struct Matrix *matrix_b)
+struct Matrix *matrixFromAddition(struct Matrix *matrix_a, struct Matrix *matrix_b)
 {
     assert(matrix_a->cols == matrix_b->cols && matrix_a->rows == matrix_b->rows, "Matrices must be the same size (matrixAddtion)\n");
 
-    struct Matrix *new_matrix = matrixNew(matrix_a->rows, matrix_b->cols);
-    int x, y;
-    for (x = 0; x < matrix_a->cols; x++)
-    {
-        for (y = 0; y < matrix_a->rows; y++)
-        {
-            matrixSetValue(new_matrix, x, y, matrixGetValue(matrix_a, x, y) + matrixGetValue(matrix_b, x, y));
-        }
-    }
+    struct Matrix *new_matrix = matrixCopy(matrix_a);
+
+    matrixAddMatrix(new_matrix, matrix_b);
 
     return new_matrix;
 }
