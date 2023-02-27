@@ -13,21 +13,25 @@ struct Matrix * matrixNew(int rows, int cols) {
     return matrix;
 }
 
-int matrixIndex(int cols, int x, int y)
+int matrixIndex(struct Matrix * matrix, int x, int y)
 {
-    return (y*cols) + x;
+    if (x < 0 || x >= matrix->cols || y < 0 || y >= matrix->rows) {
+        printf("(%d,%d) is not valid for matrix with size (%d,%d)\n",x,y,matrix->cols,matrix->rows);
+        exit(1);
+    }
+    return (y*matrix->cols) + x;
 }
 
 
 void matrixSetValue(struct Matrix * matrix, int x, int y, float value) 
 {
-    int i = matrixIndex(matrix->cols, x, y);
+    int i = matrixIndex(matrix, x, y);
     *( float *)(matrix->data + i) = value;
 }
 
 float matrixGetValue(struct Matrix * matrix, int x, int y)
 {
-    int i = matrixIndex(matrix->cols, x, y);
+    int i = matrixIndex(matrix, x, y);
     return * (float *)(matrix->data + i);
 }
 
@@ -40,7 +44,7 @@ void matrixDispose(struct Matrix * matrix)
 struct Matrix * matrixMultiply(struct Matrix * matrix_a, struct Matrix * matrix_b)
 {
     if (matrix_a->cols != matrix_b -> rows){
-        printf("Matrix a cols must equal matrix b rows");
+        printf("Matrix a cols must equal matrix b rows\n");
         exit(1);
     }
 

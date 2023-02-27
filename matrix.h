@@ -12,7 +12,7 @@ struct Matrix
 
 struct Matrix * matrixNew(int rows, int cols);
 
-int matrixIndex(int cols, int x, int y);
+int matrixIndex(struct Matrix * matrix, int x, int y);
 
 void matrixSetValue(struct Matrix * matrix, int x, int y, float value);
 
