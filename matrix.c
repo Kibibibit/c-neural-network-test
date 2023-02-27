@@ -1,65 +1,86 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "matrix.h"
+#include "helpers.h"
 
+struct Matrix *matrixNew(int rows, int cols)
+{
 
-struct Matrix * matrixNew(int rows, int cols) {
-
-    struct Matrix * matrix = (struct Matrix *)malloc(sizeof(struct Matrix));
-    matrix->data = (float *)malloc(sizeof(float)*rows*cols);
+    struct Matrix *matrix = (struct Matrix *)malloc(sizeof(struct Matrix));
+    matrix->data = (float *)malloc(sizeof(float) * rows * cols);
     matrix->rows = rows;
     matrix->cols = cols;
 
     return matrix;
 }
 
-int matrixIndex(struct Matrix * matrix, int x, int y)
+boolean matrixHas(struct Matrix *matrix, int x, int y)
 {
-    if (x < 0 || x >= matrix->cols || y < 0 || y >= matrix->rows) {
-        printf("(%d,%d) is not valid for matrix with size (%d,%d)\n",x,y,matrix->cols,matrix->rows);
-        exit(1);
-    }
-    return (y*matrix->cols) + x;
+    return x >= 0 && x < matrix->cols && y >= 0 && y < matrix->rows;
 }
 
-
-void matrixSetValue(struct Matrix * matrix, int x, int y, float value) 
+int matrixIndex(struct Matrix *matrix, int x, int y)
 {
+    assert(matrixHas(matrix, x, y), "Coordinates are not within matrix (matrixIndex)\n");
+    return (y * matrix->cols) + x;
+}
+
+void matrixSetValue(struct Matrix *matrix, int x, int y, float value)
+{
+    assert(matrixHas(matrix, x, y), "Coordinates are not within matrix (matrixSetValue)\n");
     int i = matrixIndex(matrix, x, y);
-    *( float *)(matrix->data + i) = value;
+    *(float *)(matrix->data + i) = value;
 }
 
-float matrixGetValue(struct Matrix * matrix, int x, int y)
+float matrixGetValue(struct Matrix *matrix, int x, int y)
 {
+    assert(matrixHas(matrix, x, y), "Coordinates are not within matrix (matrixGetValue)\n");
     int i = matrixIndex(matrix, x, y);
-    return * (float *)(matrix->data + i);
+    return *(float *)(matrix->data + i);
 }
 
-void matrixDispose(struct Matrix * matrix)
+void matrixDispose(struct Matrix *matrix)
 {
     free(matrix->data);
     free(matrix);
 }
 
-struct Matrix * matrixMultiply(struct Matrix * matrix_a, struct Matrix * matrix_b)
+struct Matrix *matrixMultiply(struct Matrix *matrix_a, struct Matrix *matrix_b)
 {
-    if (matrix_a->cols != matrix_b -> rows){
-        printf("Matrix a cols must equal matrix b rows\n");
-        exit(1);
-    }
+    assert(matrix_a->cols == matrix_b->rows, "Matrix a cols must equal matrix b rows (matrixMultiply)\n");
 
-    int new_matrix_cols = matrix_b -> cols;
-    int new_matrix_rows = matrix_a -> rows;
+    int new_matrix_cols = matrix_b->cols;
+    int new_matrix_rows = matrix_a->rows;
 
-    struct Matrix * new_matrix = matrixNew(new_matrix_rows, new_matrix_cols);
-    int x,y,i;
-    for (x = 0; x < new_matrix_cols; x++) {
-        for (y = 0; y < new_matrix_rows; y++) {
+    struct Matrix *new_matrix = matrixNew(new_matrix_rows, new_matrix_cols);
+    int x, y, i;
+    for (x = 0; x < new_matrix_cols; x++)
+    {
+        for (y = 0; y < new_matrix_rows; y++)
+        {
             float new_value = 0.0f;
-            for (i = 0; i < matrix_a->cols; i++) {
-                new_value += matrixGetValue(matrix_a,i,y)*matrixGetValue(matrix_b,x,i);
+            for (i = 0; i < matrix_a->cols; i++)
+            {
+                new_value += matrixGetValue(matrix_a, i, y) * matrixGetValue(matrix_b, x, i);
             }
             matrixSetValue(new_matrix, x, y, new_value);
+        }
+    }
+
+    return new_matrix;
+}
+
+struct Matrix *matrixAddition(struct Matrix *matrix_a, struct Matrix *matrix_b)
+{
+    assert(matrix_a->cols == matrix_b->cols && matrix_a->rows == matrix_b->rows, "Matrices must be the same size (matrixAddtion)\n");
+
+    struct Matrix *new_matrix = matrixNew(matrix_a->rows, matrix_b->cols);
+    int x, y;
+    for (x = 0; x < matrix_a->cols; x++)
+    {
+        for (y = 0; y < matrix_a->rows; y++)
+        {
+            matrixSetValue(new_matrix, x, y, matrixGetValue(matrix_a, x, y) + matrixGetValue(matrix_b, x, y));
         }
     }
 
