@@ -43,7 +43,10 @@ Adds `value` to all values in the matrix.
 */
 void matrixAddFloat(struct Matrix * matrix, float value);
 
-
+/*
+Multiplies all values in the matrix by `value`
+*/
+void matrixMultiplyFloat(struct Matrix * matrix, float value);
 
 void matrixDispose(struct Matrix * matrix);
 

@@ -45,32 +45,41 @@ void matrixDispose(struct Matrix *matrix)
     free(matrix);
 }
 
-struct Matrix * matrixCopy(struct Matrix * matrix) {
-    struct Matrix * new_matrix = matrixNew(matrix->rows, matrix->cols);
-    int x,y;
+struct Matrix *matrixCopy(struct Matrix *matrix)
+{
+    struct Matrix *new_matrix = matrixNew(matrix->rows, matrix->cols);
+    int x, y;
 
-    for (x = 0; x < matrix->cols; x++) {
-        for (y = 0; y < matrix->rows; y++) {
-            matrixSetValue(new_matrix, x,y, matrixGetValue(matrix,x,y));
+    for (x = 0; x < matrix->cols; x++)
+    {
+        for (y = 0; y < matrix->rows; y++)
+        {
+            matrixSetValue(new_matrix, x, y, matrixGetValue(matrix, x, y));
         }
     }
 }
 
-void matrixAddMatrix(struct Matrix * matrix, struct Matrix * other) {
-    assert(matrix->cols == other-> cols && matrix->rows == other->cols, "Matrices must be the the same size to add (matrixAddMatrix)");
-    int x,y;
-    for (x = 0; x < matrix->cols; x++) {
-        for (y = 0; y < matrix->rows;y++) {
-            matrixSetValue(matrix,x,y,matrixGetValue(matrix,x,y)+matrixGetValue(other,x,y));
+void matrixAddMatrix(struct Matrix *matrix, struct Matrix *other)
+{
+    assert(matrix->cols == other->cols && matrix->rows == other->cols, "Matrices must be the the same size to add (matrixAddMatrix)");
+    int x, y;
+    for (x = 0; x < matrix->cols; x++)
+    {
+        for (y = 0; y < matrix->rows; y++)
+        {
+            matrixSetValue(matrix, x, y, matrixGetValue(matrix, x, y) + matrixGetValue(other, x, y));
         }
     }
 }
 
-void matrixAddFloat(struct Matrix * matrix, float value) {
-    int x,y;
-    for (x = 0; x < matrix->cols; x++) {
-        for (y = 0; y < matrix->rows;y++) {
-            matrixSetValue(matrix,x,y,matrixGetValue(matrix,x,y)+value);
+void matrixAddFloat(struct Matrix *matrix, float value)
+{
+    int x, y;
+    for (x = 0; x < matrix->cols; x++)
+    {
+        for (y = 0; y < matrix->rows; y++)
+        {
+            matrixSetValue(matrix, x, y, matrixGetValue(matrix, x, y) + value);
         }
     }
 }
@@ -98,6 +107,18 @@ struct Matrix *matrixFromMultiply(struct Matrix *matrix_a, struct Matrix *matrix
     }
 
     return new_matrix;
+}
+
+void matrixMultiplyFloat(struct Matrix *matrix, float value)
+{
+    int x, y;
+    for (x = 0; x < matrix->cols; x++)
+    {
+        for (y = 0; y < matrix->rows; y++)
+        {
+            matrixSetValue(matrix, x, y, value * matrixGetValue(matrix, x, y));
+        }
+    }
 }
 
 struct Matrix *matrixFromAddition(struct Matrix *matrix_a, struct Matrix *matrix_b)
