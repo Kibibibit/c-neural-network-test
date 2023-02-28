@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "matrix.h"
 #include "helpers.h"
 
@@ -140,7 +139,6 @@ void matrixRandomize(struct Matrix * matrix, float min, float max) {
     for (x = 0; x < matrix->cols; x++) {
         for (y = 0; y < matrix->rows; y++) {
             matrixSetValue(matrix, x,y, randomFloat(min,max));
-            printf("%f\n",matrixGetValue(matrix,x,y));
         }
     }
 
