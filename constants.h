@@ -7,5 +7,4 @@
 #define EXIT_SUCCESS 0
 #define EXIT_ASSERT_FAILED 2
 
-
 #endif
