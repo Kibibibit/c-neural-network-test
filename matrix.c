@@ -133,13 +133,15 @@ struct Matrix *matrixFromAddition(struct Matrix *matrix_a, struct Matrix *matrix
     return new_matrix;
 }
 
-void matrixRandomize(struct Matrix * matrix, float min, float max) {
+void matrixRandomize(struct Matrix *matrix, float min, float max)
+{
 
-    int x,y;
-    for (x = 0; x < matrix->cols; x++) {
-        for (y = 0; y < matrix->rows; y++) {
-            matrixSetValue(matrix, x,y, randomFloat(min,max));
+    int x, y;
+    for (x = 0; x < matrix->cols; x++)
+    {
+        for (y = 0; y < matrix->rows; y++)
+        {
+            matrixSetValue(matrix, x, y, randomFloat(min, max));
         }
     }
-
 }

@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-void assert(boolean expression, char * message);
+void assert(boolean expression, char *message);
 
 float randomFloat(float min, float max);
 

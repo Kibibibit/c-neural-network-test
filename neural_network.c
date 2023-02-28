@@ -7,7 +7,8 @@
 #include "helpers.h"
 #include "graphs.h"
 
-struct NeuralNetwork * neuralNetworkNew(int input_nodes, int output_nodes, int hidden_layer_count, int hidden_layer_nodes[]) {
+struct NeuralNetwork *neuralNetworkNew(int input_nodes, int output_nodes, int hidden_layer_count, int hidden_layer_nodes[])
+{
 
     struct NeuralNetwork *network = (struct NeuralNetwork *)malloc(sizeof(struct NeuralNetwork));
 
@@ -23,11 +24,12 @@ struct NeuralNetwork * neuralNetworkNew(int input_nodes, int output_nodes, int h
     int in_layer_count = input_nodes;
     int out_layer_count = in_layer_count;
 
-    for (i = 0; i < network->hidden_layer_count; i++) {
+    for (i = 0; i < network->hidden_layer_count; i++)
+    {
         in_layer_count = out_layer_count;
         out_layer_count = hidden_layer_nodes[i];
-        struct Matrix * weight = matrixNew(out_layer_count, in_layer_count);
-        struct Matrix * bias = matrixNew(out_layer_count, 1);
+        struct Matrix *weight = matrixNew(out_layer_count, in_layer_count);
+        struct Matrix *bias = matrixNew(out_layer_count, 1);
         matrixRandomize(weight, -1.0, 1.0);
         matrixRandomize(bias, -1.0, 1.0);
 
@@ -35,8 +37,8 @@ struct NeuralNetwork * neuralNetworkNew(int input_nodes, int output_nodes, int h
         linkedListAppend(network->biases, bias);
     }
 
-    struct Matrix * weight = matrixNew(output_nodes, out_layer_count);
-    struct Matrix * bias = matrixNew(output_nodes, 1);
+    struct Matrix *weight = matrixNew(output_nodes, out_layer_count);
+    struct Matrix *bias = matrixNew(output_nodes, 1);
 
     matrixRandomize(weight, -1.0, 1.0);
     matrixRandomize(bias, -1.0, 1.0);
@@ -47,44 +49,52 @@ struct NeuralNetwork * neuralNetworkNew(int input_nodes, int output_nodes, int h
     return network;
 }
 
-void neuralNetworkForwardPropogate(struct NeuralNetwork * network, float inputs[], float outputs[]) {
+void neuralNetworkForwardPropogate(struct NeuralNetwork *network, float inputs[], float outputs[])
+{
 
-    struct Matrix * matrix = matrixNew(network->input_nodes, 1);
+    struct Matrix *matrix = matrixNew(network->input_nodes, 1);
     int i;
 
-    for (i = 0; i < network->input_nodes; i++) {
-        matrixSetValue(matrix,0,i,inputs[i]);
+    for (i = 0; i < network->input_nodes; i++)
+    {
+        matrixSetValue(matrix, 0, i, inputs[i]);
     }
 
-    for (i = 0; i < network->weights->size; i++) {
-        struct Matrix * weight = linkedListGet(network->weights,i);
-        struct Matrix * bias = linkedListGet(network->biases, i);
-        struct Matrix * new_matrix = matrixFromMultiply(weight,matrix);
+    for (i = 0; i < network->weights->size; i++)
+    {
+        struct Matrix *weight = linkedListGet(network->weights, i);
+        struct Matrix *bias = linkedListGet(network->biases, i);
+        struct Matrix *new_matrix = matrixFromMultiply(weight, matrix);
 
         matrixAddMatrix(new_matrix, bias);
         matrixDispose(matrix);
-        int x,y;
-        for (x = 0; x < new_matrix->cols;x++) {
-            for (y = 0; y < new_matrix->rows;y++) {
-                matrixSetValue(new_matrix,x,y,sigmoid(matrixGetValue(new_matrix,x,y)));
+        int x, y;
+        for (x = 0; x < new_matrix->cols; x++)
+        {
+            for (y = 0; y < new_matrix->rows; y++)
+            {
+                matrixSetValue(new_matrix, x, y, sigmoid(matrixGetValue(new_matrix, x, y)));
             }
         }
 
         matrix = new_matrix;
     }
 
-    for (i = 0; i < matrix->rows; i++) {
-        outputs[i] = matrixGetValue(matrix,0,i);
+    for (i = 0; i < matrix->rows; i++)
+    {
+        outputs[i] = matrixGetValue(matrix, 0, i);
     }
 
     matrixDispose(matrix);
 }
 
-void neuralNetworkDispose(struct NeuralNetwork * network) {
+void neuralNetworkDispose(struct NeuralNetwork *network)
+{
     int i;
-    for (i = 0; i < network->weights->size; i++) {
-        matrixDispose(linkedListGet(network->weights,i));
-        matrixDispose(linkedListGet(network->biases,i));
+    for (i = 0; i < network->weights->size; i++)
+    {
+        matrixDispose(linkedListGet(network->weights, i));
+        matrixDispose(linkedListGet(network->biases, i));
     }
     linkedListDispose(network->weights);
     linkedListDispose(network->biases);

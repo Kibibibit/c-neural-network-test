@@ -5,18 +5,19 @@
 #include "typedefs.h"
 #include "constants.h"
 
-void assert(boolean expression, char * message) {
-    if (!expression) {
+void assert(boolean expression, char *message)
+{
+    if (!expression)
+    {
         printf(message);
         exit(EXIT_ASSERT_FAILED);
     }
 }
 
-float randomFloat(float min, float max) {
+float randomFloat(float min, float max)
+{
 
+    float scale = rand() / (float)INT32_MAX;
 
-    float scale = rand() / (float) INT32_MAX;
-
-    return min + scale*(max-min);
-
+    return min + scale * (max - min);
 }

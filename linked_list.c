@@ -63,7 +63,6 @@ void *linkedListGet(struct LinkedList *list, int index)
     }
     return currentNode->data;
 }
-    
 
 void linkedListDispose(struct LinkedList *list)
 {
