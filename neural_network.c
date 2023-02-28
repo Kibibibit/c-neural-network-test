@@ -5,6 +5,7 @@
 #include "constants.h"
 #include "matrix.h"
 #include "helpers.h"
+#include "graphs.h"
 
 struct NeuralNetwork * neuralNetworkNew(int input_nodes, int output_nodes, int hidden_layer_count, int hidden_layer_nodes[]) {
 
@@ -62,6 +63,13 @@ void neuralNetworkForwardPropogate(struct NeuralNetwork * network, float inputs[
 
         matrixAddMatrix(new_matrix, bias);
         matrixDispose(matrix);
+        int x,y;
+        for (x = 0; x < new_matrix->cols;x++) {
+            for (y = 0; y < new_matrix->rows;y++) {
+                matrixSetValue(new_matrix,x,y,sigmoid(matrixGetValue(new_matrix,x,y)));
+            }
+        }
+
         matrix = new_matrix;
     }
 
