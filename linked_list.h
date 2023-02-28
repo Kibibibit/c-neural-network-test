@@ -1,12 +1,13 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+#include "typedefs.h"
+
 struct LinkedListNode
 {
     void *data;
     struct LinkedListNode *next;
     struct LinkedListNode *prev;
-    unsigned long data_size;
 };
 
 struct LinkedList
@@ -18,13 +19,11 @@ struct LinkedList
 
 struct LinkedList *linkedListNew();
 
-struct LinkedListNode *linkedListNodeNew(void *value, unsigned long data_size);
+struct LinkedListNode *linkedListNodeNew(void *value);
 
-void linkedListAppend(struct LinkedList *list, void *value, unsigned long data_size);
+void linkedListAppend(struct LinkedList *list, void *value);
 
 void *linkedListGet(struct LinkedList *list, int index);
-
-void linkedListNodeDispose(struct LinkedListNode *node);
 
 void linkedListDispose(struct LinkedList *list);
 

@@ -10,7 +10,7 @@ all: main
 clean:
 	rm -rf main *.o
 
-main: helpers.o linked_list.o main.o matrix.o
+main: helpers.o linked_list.o main.o matrix.o neural_network.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 %.o: %.c

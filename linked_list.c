@@ -1,5 +1,6 @@
 #include <stdlib.h>
-#include"linked_list.h"
+#include "typedefs.h"
+#include "linked_list.h"
 
 struct LinkedList *linkedListNew()
 {
@@ -10,25 +11,19 @@ struct LinkedList *linkedListNew()
     return list;
 };
 
-struct LinkedListNode *linkedListNodeNew(void *value, unsigned long data_size)
+struct LinkedListNode *linkedListNodeNew(void *value)
 {
     struct LinkedListNode *node = (struct LinkedListNode *)malloc(sizeof(struct LinkedListNode));
-    node->data = malloc(data_size);
-    int i;
-    /// Allow for variably sized for each element, regardless of datatype
-    for (i = 0; i < data_size; i++)
-    {
-        *(char *)(node->data + i) = *(char *)(value + i);
-    }
+    node->data = value;
     node->next = NULL;
     node->prev = NULL;
     return node;
 }
 
-void linkedListAppend(struct LinkedList *list, void *value, unsigned long data_size)
+void linkedListAppend(struct LinkedList *list, void *value)
 {
 
-    struct LinkedListNode *node = linkedListNodeNew(value, data_size);
+    struct LinkedListNode *node = linkedListNodeNew(value);
     if (list->head == NULL)
     {
         list->head = node;
@@ -68,12 +63,7 @@ void *linkedListGet(struct LinkedList *list, int index)
     }
     return currentNode->data;
 }
-
-void linkedListNodeDispose(struct LinkedListNode *node)
-{
-    free(node->data);
-    free(node);
-}
+    
 
 void linkedListDispose(struct LinkedList *list)
 {
@@ -83,7 +73,7 @@ void linkedListDispose(struct LinkedList *list)
     {
         prevNode = currentNode;
         currentNode = currentNode->next;
-        linkedListNodeDispose(prevNode);
+        free(prevNode);
     }
     free(list);
 }

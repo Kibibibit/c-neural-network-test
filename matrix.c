@@ -57,6 +57,8 @@ struct Matrix *matrixCopy(struct Matrix *matrix)
             matrixSetValue(new_matrix, x, y, matrixGetValue(matrix, x, y));
         }
     }
+
+    return new_matrix;
 }
 
 void matrixAddMatrix(struct Matrix *matrix, struct Matrix *other)
