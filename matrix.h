@@ -50,4 +50,6 @@ void matrixMultiplyFloat(struct Matrix * matrix, float value);
 
 void matrixDispose(struct Matrix * matrix);
 
+void matrixRandomize(struct Matrix * matrix, float min, float max);
+
 #endif

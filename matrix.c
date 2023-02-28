@@ -63,7 +63,7 @@ struct Matrix *matrixCopy(struct Matrix *matrix)
 
 void matrixAddMatrix(struct Matrix *matrix, struct Matrix *other)
 {
-    assert(matrix->cols == other->cols && matrix->rows == other->cols, "Matrices must be the the same size to add (matrixAddMatrix)");
+    assert(matrix->cols == other->cols && matrix->rows == other->rows, "Matrices must be the the same size to add (matrixAddMatrix)");
     int x, y;
     for (x = 0; x < matrix->cols; x++)
     {
@@ -132,4 +132,16 @@ struct Matrix *matrixFromAddition(struct Matrix *matrix_a, struct Matrix *matrix
     matrixAddMatrix(new_matrix, matrix_b);
 
     return new_matrix;
+}
+
+void matrixRandomize(struct Matrix * matrix, float min, float max) {
+
+    int x,y;
+    for (x = 0; x < matrix->cols; x++) {
+        for (y = 0; y < matrix->rows; y++) {
+            matrixSetValue(matrix, x,y, randomFloat(min,max));
+            printf("%f\n",matrixGetValue(matrix,x,y));
+        }
+    }
+
 }

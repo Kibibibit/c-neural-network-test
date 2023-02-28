@@ -15,4 +15,6 @@ struct NeuralNetwork * neuralNetworkNew(int input_nodes, int output_nodes, int h
 
 void neuralNetworkDispose(struct NeuralNetwork * network);
 
+void neuralNetworkForwardPropogate(struct NeuralNetwork * network, float inputs[], float outputs[]);
+
 #endif
